@@ -1,0 +1,425 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>MUMU MAP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+		<style>
+			table.type10 {
+			  border-collapse: collapse;
+			  text-align: left;
+			  line-height: 1.5;
+			  border-top: 1px solid #ccc;
+			  border-bottom: 1px solid #ccc;
+			  margin: 20px 10px;
+			}
+			table.type10 thead th {
+			  width: 150px;
+			  padding: 10px;
+			  font-weight: bold;
+			  vertical-align: top;
+			  color: #fff;
+			  background: #e7708d;
+			  margin: 20px 10px;
+			}
+			table.type10 tbody th {
+			  width: 150px;
+			  padding: 10px;
+			}
+			table.type10 td {
+			  width: 350px;
+			  padding: 10px;
+			  vertical-align: top;
+			}
+			table.type10 .even {
+			  background: #fdf3f5;
+			}
+			
+			
+		</style>
+
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+								<header id="header">
+									<a href="index.html" class="logo"><h2><strong>MUMU MAP</strong></h2></a>
+									<ul class="icons">
+										<li><a href="http://127.0.0.1:5000/map" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+										<li><a href="http://127.0.0.1:5000/w" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+										<li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
+										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+										<li><a href="#" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+									</ul>
+								</header>
+
+							<!-- Banner -->
+								<section id="banner">
+									<div class="content">
+										<header>
+											<h2 class="title">통계</h2>
+											
+										</header>
+										
+										<ul class="actions">
+											<li><a href="#" class="button big">더 알아보기</a></li>
+										</ul>
+                                        <div id="plot3">
+											{%if rank1 is defined%}
+												<table class="type10">
+												<thead>
+													<tr>
+													<th>순위</th>
+													<th>살기 좋은 순서</th>  
+													<th>수치</th>             
+													</tr>
+												</thead>
+												{% for item in rank1 %}
+													<tr>
+														<td>{{loop.index}}</td>
+														<td>{{item}}</td>
+														<td>{{rank2[loop.index-1]}}</td>
+													</tr>
+												{% endfor %}
+												</table>
+											{%endif %}
+                                        </div>
+									</div>
+									<!--
+									<div id="plot">
+                                        {%if flag=='mac'%}
+                                        {% include 'mac.html' %}
+                                        {%elif flag=='pop'%}
+                                        {% include 'seoul_pop.html' %}
+                                        {%elif flag=='health'%}
+                                        {% include 'seoul_health.html' %}
+                                        {% endif %}
+                                    </div>
+                                    <div id="plot2">
+
+                                    </div>
+									-->
+									<div id="chart-wrapper">
+										<canvas id="chart1" width="500" height="500"></canvas>
+									</div>	
+
+
+								</section>
+
+							
+
+
+							
+
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Search -->
+								<section id="search" class="alt">
+									<form method="post">
+										<input type="text" name="keyword"  placeholder="Search" autocomplete=”off”/>
+                                        <input type="submit" value="검색">
+									</form>                                
+								</section>
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>메뉴</h2>
+									</header>
+									<ul>
+										<li>
+											<span class="opener">추천 시스템 컴온</span>
+											<ul>
+											<form method="post">
+
+												<!--
+												<div class="range-slider">
+													<input class="range-slider__range" type="range" name= 'ran1' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
+												</div>
+												<div class="range-slider">
+													<input class="range-slider__range" type="range" name= 'ran2' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
+												</div>
+												<div class="range-slider">
+													<input class="range-slider__range" type="range" name= 'ran3' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
+												</div>
+												<div class="range-slider">
+													<input class="range-slider__range" type="range" name= 'ran4' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
+												</div>  
+											--> 
+
+												<input type='range' name= 'ran1' value="0" min="0" max="100" step="10" />건강<br/>
+												<input type='range' name= 'ran2' value="0"  min="0" max="100" step="10"/>교육<br/>
+												<input type='range' name= 'ran3' value="0"  min="0" max="100" step="10"/>상권<br/>
+												<input type='range' name= 'ran4' value="0"  min="0" max="100" step="10"/>생활<br/>
+												<input type='range' name= 'ran5' value="0"  min="0" max="100" step="10"/>스포츠<br/>
+												<input type='range' name= 'ran6' value="0" min="0" max="100" step="10"/>안전<br/>
+												<input type='range' name= 'ran7' value="0"  min="0" max="100" step="10"/>여가<br/>
+												<input type='range' name= 'ran8' value="0"  min="0" max="100" step="10"/>체육<br/>
+												<input type='range' name= 'ran9' value="0"  min="0" max="100" step="10"/>환경<br/>
+												<input type='range' name= 'ran10' value="0"  min="0" max="100" step="10"/>집값<br/>										
+												<input type="submit" value="추천해줘"><br/>
+
+												
+												
+											</form>
+												{{score}}
+																				
+											</ul>
+										</li>
+										<li>
+											<span class="show_total" onclick="h_click('평균','서울종합2','seoul_health')">종합</span>
+										</li>
+                                        <li>
+											<span class="opener"><strong>건강</strong></span>
+											<ul>
+												<li class="health0" onclick="h_click('평균','서울건강','seoul_health')">종합</li>
+												<li class="health1" onclick="h_click('정신건강증진기관','서울건강','seoul_health')">정신건강증진기관</li>
+                                                <li class="health2" onclick="h_click('의사','서울건강','seoul_health')">의사수</li>
+                                                <li class="health3" onclick="h_click('의료기관병상','서울건강','seoul_health')">의료기관병상수</li>
+												<li class="health4" onclick="h_click('대형병원','서울건강','seoul_health')">대형병원</li>
+												<li class="health5" onclick="h_click('산후조리원','서울건강','seoul_health')">산후조리원</li>
+												<li class="health6" onclick="h_click('안마원','서울건강','seoul_health')">안마원</li>
+												<li class="health7" onclick="h_click('약국','서울건강','seoul_health')">약국</li>
+												<li class="health8" onclick="h_click('병원','서울건강','seoul_health')">병원</li>
+												
+											</ul>
+										</li>
+                                        <li>
+											<span class="opener">교육</span>
+											<ul>
+												<li class="edu0" onclick="h_click('평균','서울교육','seoul_health')">종합</li>
+												<li class="edu1" onclick="h_click('학교수','서울교육','seoul_health')">학교수</li>
+                                                <li class="edu2" onclick="h_click('사설학원','서울교육','seoul_health')">사설학원</li>
+                                                <li class="edu3" onclick="h_click('학생','서울교육','seoul_health')">학생</li>
+												<li class="edu4" onclick="h_click('보육시설','서울교육','seoul_health')">보육시설</li>										
+											</ul>
+										</li>
+                                        <li>
+											<span class="opener">안전</span>
+											<ul>
+												<li class="safe0" onclick="h_click('평균','서울안전','seoul_health')">종합</li>
+												<li class="safe1" onclick="h_click('경찰서','서울안전','seoul_health')">경찰서</li>
+												<li class="safe2" onclick="h_click('소방서','서울안전','seoul_health')">소방서</li>
+                                                <li class="safe3" onclick="h_click('인식','서울안전','seoul_health')">안전인식</li>
+                                                <li class="safe4" onclick="h_click('cctv','서울안전','seoul_health')">cctv</li>
+												<li class="safe5" onclick="h_click('응급실','서울안전','seoul_health')">응급실</li>
+												<li class="safe6" onclick="h_click('교통사고화재','서울안전','seoul_health')">교통사고화재</li>		
+											</ul>
+										</li>
+                                        <li>
+											<span class="opener">여가</span>
+											<ul>
+												<li class="leisure0" onclick="h_click('평균','서울여가','seoul_health')">종합</li>
+												<li class="leisure1" onclick="h_click('PC방','서울여가','seoul_health')">PC방</li>
+												<li class="leisure2" onclick="h_click('오락실','서울여가','seoul_health')">오락실</li>
+												<li class="leisure3" onclick="h_click('노래방','서울여가','seoul_health')">노래방</li>
+                                                <li class="leisure4" onclick="h_click('영화관','서울여가','seoul_health')">영화관</li>
+                                                
+											</ul>
+										</li>
+                                        <li>
+											<span class="opener">환경</span>
+											<ul>
+												<li class="eco0" onclick="h_click('평균','서울환경','seoul_health')">종합</li>
+												<li class="eco1" onclick="h_click('환경체감도','서울환경','seoul_health')">환경체감도</li>
+												<li class="eco2" onclick="h_click('산업폐수방류량','서울환경','seoul_health')">산업폐수방류량</li>
+												<li class="eco3" onclick="h_click('녹지지역','서울환경','seoul_health')">녹지지역</li>
+                                                <li class="eco4" onclick="h_click('미세먼지','서울환경','seoul_health')">미세먼지</li>                                             
+											</ul>
+										</li>
+										<li>
+											<span class="opener">상권</span>
+											<ul>
+												<li class="com0" onclick="h_click('평균','서울상권','seoul_health')">상권</li>                                            
+											</ul>
+										</li>
+										<li>
+											<span class="opener">생활</span>
+											<ul>
+												<li class="life0" onclick="h_click('평균','서울생활','seoul_health')">종합</li>
+												<li class="life1" onclick="h_click('미용업','서울생활','seoul_health')">미용업</li>
+												<li class="life2" onclick="h_click('세탁업','서울생활','seoul_health')">세탁업</li>
+												<li class="life3" onclick="h_click('목욕장업','서울생활','seoul_health')">목용장업</li>
+                                                <li class="life4" onclick="h_click('대규모점포','서울생활','seoul_health')">대규모점포</li>
+												<li class="life5" onclick="h_click('편의점','서울생활','seoul_health')">편의점</li>                                              
+											</ul>
+										</li>
+										<li>
+											<span class="opener">체육</span>
+											<ul>
+												<li class="gym0" onclick="h_click('평균','서울체육','seoul_health')">종합</li>
+												<li class="gym2" onclick="h_click('종합체육시설','서울체육','seoul_health')">종합체육시설</li>
+												<li class="gym3" onclick="h_click('체력단련장','서울체육','seoul_health')">체력단련장</li>
+                                                <li class="gym4" onclick="h_click('체육도장업','서울체육','seoul_health')">체육도장업</li>                                             
+											</ul>
+										</li>
+										<li>
+											<span class="opener">스포츠</span>
+											<ul>
+												<li class="sport0" onclick="h_click('평균','서울스포츠','seoul_health')">종합</li>
+												<li class="sport1" onclick="h_click('골프연습장','서울스포츠','seoul_health')">골프연습장</li>
+												<li class="sport2" onclick="h_click('당구장','서울스포츠','seoul_health')">당구장</li>
+												<li class="sport3" onclick="h_click('수영장','서울스포츠','seoul_health')">수영장</li>                                            
+											</ul>
+										</li>
+										<li>
+											<span class="opener">집값</span>
+											<ul>
+												<li class="estate0" onclick="h_click('집값','서울집값','seoul_health')">집값</li>												                                       
+											</ul>
+										</li>
+
+									</ul>
+
+								</nav>
+
+							
+
+							
+
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.4/d3.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<script src="{{ url_for('static', filename='js/script.js') }}" ></script>
+		<script src="https://d3js.org/d3.v5.min.js"></script>
+
+
+	-->
+		
+        <script>
+
+			
+
+            var parameter,ctx;
+            var group,group_value;
+
+
+			function h_click(title_name,file_name,folder_name){
+
+				var str='/static/html/'+folder_name+'/'+title_name+'.html';
+				//var str='/static/html/seoul_health/'+title_name+'.html';
+				
+				var csv_name='static/data/'+file_name+'.csv';
+
+				$("#plot3").load(str);
+
+				if(chart!=undefined){
+					chart.destroy();
+				
+				}
+
+				$('.title').text(title_name);
+
+
+				parameter = getParams();
+				ctx = document.getElementById("chart1");
+
+				group="구";
+				group_value=title_name;
+
+				d3.csv(csv_name)
+				.then(makeChart);
+
+			}
+
+
+			var rangeSlider = function(){
+			var slider = $('.range-slider'),
+				range = $('.range-slider__range'),
+				value = $('.range-slider__value');
+				
+			slider.each(function(){
+
+				value.each(function(){
+				var value = $(this).prev().attr('value');
+				$(this).html(value);
+				});
+
+				range.on('input', function(){
+				$(this).next(value).html(this.value);
+				});
+			});
+			};
+
+			rangeSlider();
+
+			
+			//폐기예정
+			function c_click(){
+
+
+
+				$("#plot3").load("{{ url_for('static', filename='html/mainpage3.html') }}");
+
+
+
+
+
+
+				/*
+				if(chart!=undefined){
+					chart.destroy();
+
+				}
+
+
+				parameter = getParams();
+				ctx = document.getElementById("chart1");
+
+				group="구";
+				group_value="종합";
+
+				
+				
+				
+
+				$('.title').text(dd);
+				*/
+			}
+
+			
+
+        </script>
+
+
+		
+
+			<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+			
+
+
+
+	</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>mumu</title>
+	<meta charset="utf-8">
+	<style>
+		img{
+			width: 500px;
+			height: 500px;
+		}
+
+		#image1{
+			float:left;
+			width:50%;
+		}
+
+		#image2{
+			float:right;
+			width:50%;
+		}
+
+	</style>
+	<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+	<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<center>
+	<h1>살고 싶은곳을 골라</h1>
+	<h2 class="inpra">여기</h2>
+	<p id="cal"></p>
+
+
+
+
+	<span id="image1" onclick="cc(); change(0); ">  <!--cc();-->
+	</span>
+
+	<span id="image2" onclick="cc2(); change(1); "> <!--cc2();-->
+	</span>
+	
+<div>
+<button id="actres" class="btn btn-primary" data-title="결과보기" style="width: 100%;" data-toggle="modal" data-target="#result" onclick="itemli()">결과보기</button>
+	
+
+
+<div class="modal fade" id="result" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+		<div class="modal-content">
+
+			<div class="modal-header">
+
+				<h4 class="modal-title custom_align" id="Heading">니 취향</h4>
+
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" >X</button>        
+
+			</div>
+
+			<div class="modal-body">
+
+
+
+				<div class="form-group">
+
+					 <textarea rows="4" class="form-control" id="itemtypelist" readonly></textarea>           
+			
+				</div>
+
+	
+
+			</div>
+
+	
+		</div>
+
+   
+
+    </div>
+
+       
+</div>
+</div>
+  
+
+
+
+	<script>
+
+		
+
+		text ="";
+		var images=[];
+		var sImages = [];
+		var rank=[10,10,10,10,10,10,10,10];
+		var rankname=["헬스장","피시방","숲","학원","병원","영화관","미세먼지","cctv"];
+
+
+		var cnt=0;
+		var num=0;
+		var sNum = 0;
+		var cnt2=0;
+
+
+
+		function show(){
+
+			for(i=0; i<8; i++)
+			{
+				//images[i]= (i+1)+".jpg";
+				images[i]="{{ url_for('static', filename='html/world/') }}"+(i+1)+".html";
+			}
+			//images.sort(function(a,b){return 0.5- Math.random()});
+			showImg(num);
+		}
+
+		show(0);
+
+		function showImg(num){
+
+			$("#image1").load(images[num]);
+			$("#image2").load(images[num+1]);
+
+			//document.getElementById('image').src=images[num];
+			//document.getElementById('images').src=images[num+1];
+			cnt2++;
+		}
+
+		function change(n){
+			if(cnt2<20)
+			{
+				cnt++;
+
+				if(n == 0){
+						sImages[sNum++] = images[num];
+				}
+				else
+					sImages[sNum++] = images[num+1];
+
+				if(cnt == images.length/2){
+
+					if(cnt==1){
+						$('.inpra').text("끝"+rank[1]);
+						cnt2=22;
+						return;
+					}
+
+					for(i=0; i<sImages.length; i++){
+						images[i] = sImages[i];
+						sImages[i] = null;
+					}
+					images.splice(cnt);  //cnt인덱스부터 모두 제거
+					
+					cnt = 0;
+					num = 0;
+					sNum = 0;
+					showImg(num);
+				}
+
+				else{
+					num+=2;
+					showImg(num);					
+				}
+				
+			}
+
+
+
+		}
+
+
+		/*
+		function change(n){
+			if(cnt2<20)
+			{
+				
+
+				cnt++;
+
+				
+				if(n == 0)
+					sImages[sNum++] = images[num];
+				else
+					sImages[sNum++] = images[num+1];
+				num+=2;
+
+				showImg(num);
+
+				$('#dbg').text(cnt+" "+num+" "+cnt2);
+
+
+				if(cnt == 4){
+					$('#dbg').text("안녕"+cnt+" "+num+" "+cnt2);
+					for(i=0; i<sImages.length; i++){
+						images[i] = sImages[i];
+						sImages[i] = null;
+					}
+					images.splice(cnt);  //cnt인덱스부터 모두 제거
+					cnt = 0;
+					num = 0;
+					sNum = 0;
+					showImg(num);
+				}
+			}
+
+
+
+		}
+		*/
+
+
+
+		
+		function cc(){
+			if(cnt2<20){
+			var tex=images[num].split('/');
+			var tex2=tex[4].split('.');
+
+			rank[parseInt(tex2)-1]+=10;
+
+			$('.inpra').text(tex2[0]);
+			}
+		}
+
+		function cc2(){
+
+			if(cnt2<20){
+			var tex=images[num+1].split('/');
+			var tex2=tex[4].split('.');
+
+			rank[parseInt(tex2)-1]+=10;
+
+			$('.inpra').text(tex2[0]);
+			}
+		}
+
+		function itemli(){
+			var itemlist="";
+
+			for (i = 0; i < 8; i++) {
+	
+				itemlist+=rankname[i]+": "+rank[i]+"\n";
+			}
+
+			var hello="안녕"
+			$("#itemtypelist").val(itemlist);
+		}
+
+
+		
+
+
+
+		document.getElementById('cal').innerHTML=text;
+	</script>
+	
+
+
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+</center>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+    <head>
+        <title>Flask Template Example</title>
+        <meta name="veiwport" content = "width=device-width, initial-scale=1.0">
+        <!--<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel = "stylesheet" media="screen">-->
+        <link rel="stylesheet" href="assets/css/main.css" />
+        
+    </head>
+    <body>
+        <div>
+            <form method="post">
+                <input type='checkbox' name= 'tag1' value="mac"/>맥도날드<br/>
+                <input type='checkbox' name= 'tag2' value="pop"/>인구수<br/>
+                <input type='checkbox' name= 'tag3' value="health"/>건강지수<br/>
+                <input type='checkbox' name= 'tag4' value="fitness"/>헬스장<br/>
+                
+
+                <input type='range' name= 'ran1' value="0" min="0" max="100"/>맥도날드<br/>
+                <input type='range' name= 'ran3' value="0"  min="0" max="100"/>건강지수<br/>
+                <input type='range' name= 'ran4' value="0"  min="0" max="100"/>헬스장<br/>
+                <input type="submit" value="추천해줘"><br/>
+            </form>
+            
+           
+            {{rank1}} <br/>
+             
+        </div>
+
+        <div>
+            {%if a==1%}
+            {% include 'mac.html' %}
+            {% endif %}
+            {%if b==1%}
+            {% include 'seoul_pop.html' %}
+            {% endif %}
+            {%if c==1%}
+            {% include 'seoul_health.html' %}
+            {% endif %}
+            {%if d==1%}
+            {% include 'fitness_seoul.html' %}
+            {% endif %}
+
+        </div>
+            
+
+
+    
+        
+
+        <script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+    </body>
+</html>

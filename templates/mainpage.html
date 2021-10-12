@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>MUMU MAP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+								<header id="header">
+									<a href="index.html" class="logo"><h2><strong>MUMU MAP</strong></h2></a>
+									<ul class="icons">
+										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+										<li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
+										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+										<li><a href="#" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+									</ul>
+								</header>
+
+							<!-- Banner -->
+								<section id="banner">
+									<div class="content">
+										<header>
+											<h2 class="title">통계</h2>
+											
+										</header>
+										
+										<ul class="actions">
+											<li><a href="#" class="button big">더 알아보기</a></li>
+										</ul>
+                                        <div id="plot3">
+
+                                        </div>
+									</div>
+									<div id="plot">
+                                        {%if flag=='mac'%}
+                                        {% include 'mac.html' %}
+                                        {%elif flag=='pop'%}
+                                        {% include 'seoul_pop.html' %}
+                                        {%elif flag=='health'%}
+                                        {% include 'seoul_health.html' %}
+                                        {% endif %}
+                                    </div>
+                                    <div id="plot2">
+
+                                    </div>
+									<div id="chart-wrapper">
+										<canvas id="chart1"></canvas>
+									</div>	
+
+
+								</section>
+
+							
+
+
+							
+
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Search -->
+								<section id="search" class="alt">
+									<form method="post">
+										<input type="text" name="keyword"  placeholder="Search" />
+                                        <input type="submit" value="검색">
+									</form>                                
+								</section>
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>메뉴</h2>
+									</header>
+									<ul>
+										<li>
+											<span class="show_total">종합</span>
+										</li>
+                                        <li>
+											<span class="opener"><strong>건강</strong></span>
+											<ul>
+												<li class="health1">정신건강증진기관 수</li>
+                                                <li class="health2">의사수</li>
+                                                <li class="health3">의료기관병상수</li>
+												<li class="health4">대형병원</li>
+												<li class="health5">산후조리원</li>
+												<li class="health6">안마원</li>
+												<li class="health7">약국</li>
+												<li class="health8">병원</li>
+											</ul>
+										</li>
+                                        <li>
+											<span class="opener">교육</span>
+											<ul>
+												<li>교원 1인당 학생수</li>
+                                                <li>영유아 천명당 보육시설 수</li>
+                                                <li>인구 십만명당 학교수</li>
+                                                <li>인구 천명당 사설학원수</li>
+											</ul>
+										</li>
+                                        <li>
+											<span class="opener">안전</span>
+											<ul>
+												<li>인구 천명당 cctv 대수</li>
+                                                <li>인구 십만명당 응급의료기관 및 응급실 운영기관수</li>
+                                                <li>단위면적당 지역경찰관서 수</li>
+											</ul>
+										</li>
+                                        <li>
+											<span class="opener">여가</span>
+											<ul>
+												<li>여가활용 만족도</li>
+                                                <li>노인 천명당 노인여가복지시설수</li>
+                                                <li>인구 십만명당 도서관수</li>
+                                                <li>인구 십만명당 문화기반시설수</li>
+                                                <li>인구 천명당 체육관련 여가시설수</li>
+                                                <li>헬스장</li>
+                                                <li>영화관</li>
+                                                <li>상권</li>
+											</ul>
+										</li>
+                                        <li>
+											<span class="opener">환경</span>
+											<ul>
+												<li class="eco1">환경체감도</li>
+                                                <li class="eco2" onclick="f_click()">인구 천명당 1일 산업폐수 방류량</li>
+                                                <li>도시지역 중 녹지지역 비율</li>
+                                                <li>미세먼지</li>
+                                                <li>주민 1인당 생활폐기물배출량</li>
+											</ul>
+										</li>
+
+									</ul>
+
+								</nav>
+
+							
+
+							
+
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.4/d3.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<script src="{{ url_for('static', filename='js/script.js') }}" ></script>
+		<script src="https://d3js.org/d3.v5.min.js"></script>
+
+
+		<!--
+		<script>
+			var parameter = getParams();
+				console.log(parameter[0]);
+
+
+
+
+				var ctx = document.getElementById("chart1");
+				d3.csv('static/data/전국환경2.csv')
+				.then(makeChart);
+		</script>
+	-->
+		
+        <script>
+    
+            $(".show_total").click(function(){
+                $("#plot2").load("{{ url_for('static', filename='html/total.html') }}");
+                $('.title').text('종합');
+            })
+
+
+            $(".health1").click(function(){
+                $("#plot").load("{{ url_for('static', filename='html/seoul_health1.html') }}");
+                $("#plot3").load("{{ url_for('static', filename='html/practice.html') }}");
+                $('.title').text('인구 십만명당 정신건강증진기관 수');
+            })
+
+            $(".health2").click(function(){
+                $("#plot").load("{{ url_for('static', filename='html/seoul_health2.html') }}");
+				$('.title').text('인구 천명당 의료기관 종사 의사수');
+            })
+
+			$(".health3").click(function(){
+                $("#plot").load("{{ url_for('static', filename='html/seoul_health3.html') }}");
+				$('.title').text('인구 천명당 의료기관병상수');
+            })
+
+			$(".eco1").click(function(){
+				$('.title').text('환경');
+
+            })
+
+
+
+        </script>
+
+
+		
+
+			<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+			
+
+
+
+	</body>
+</html>
