@@ -107,7 +107,16 @@
                         <input type='hidden'  id='t13' name= 'tag13' value="1" />
                         <input type='hidden'  id='t14' name= 'tag14' value="1" />
                         <input type='hidden'  id='t15' name= 'tag15' value="1" />
-                        <input type='hidden'  id='t16' name= 'tag16' value="1" />				
+                        <input type='hidden'  id='t16' name= 'tag16' value="1" />
+						<input type='hidden'  id='t17' name= 'tag17' value="1" />
+                        <input type='hidden'  id='t18' name= 'tag18' value="1" />
+                        <input type='hidden'  id='t19' name= 'tag19' value="1" />
+                        <input type='hidden'  id='t20' name= 'tag20' value="1" />	
+                        <input type='hidden'  id='t21' name= 'tag21' value="1" />
+                        <input type='hidden'  id='t22' name= 'tag22' value="1" />
+                        <input type='hidden'  id='t23' name= 'tag23' value="1" />
+                        <input type='hidden'  id='t24' name= 'tag24' value="1" />
+						<input type='hidden'  id='t25' name= 'tag25' value="1" />				
                         <input type="submit" value="가자">
                         
                     </form>
@@ -137,8 +146,9 @@
 		text ="";
 		var images=[];
 		var next_img = [];
-		var rank=[10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10];
-		var rankname=['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구'];
+		var rank=new Array(25).fill(0);
+		var rankname=['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구',
+							'성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'];
 
 
 		var cnt=0;
@@ -150,11 +160,12 @@
 
 		function img_init(){
 
-			for(i=0; i<16; i++)
+			for(i=0; i<25; i++)
 			{
 				images[i]="{{ url_for('static', filename='html/map/') }}"+(i+1)+".html";
 			}
 			images.sort(function(a,b){return 0.5- Math.random()}); //랜덤정렬
+			images.splice(16); //16번째 인덱스부터 제거
 			show(num);
 		}
 
@@ -244,8 +255,9 @@
 		function itemli(){
 			var itemlist="";
 
-			for (i = 0; i < 16; i++) {
-	
+			for (i = 0; i < 25; i++) {
+				
+				if(rank[i]!=0)
 				itemlist+=rankname[i]+": "+rank[i]+"\n";
 			}
 
@@ -255,7 +267,7 @@
 
 		function listcal(){
 
-            for(i=1; i<=16; i++){
+            for(i=1; i<=25; i++){
                 var a='t'+i;
                 var b=rank[i-1];
                 document.getElementById(a).setAttribute('value', b );
