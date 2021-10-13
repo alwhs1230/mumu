@@ -24,7 +24,9 @@ def tes():
 def cal(name,arr,dfarr):
     sum=0
     total=0
-    for i in range (4):
+    for i in range (25):
+        if(arr[i]==0):
+            continue
         df=dfarr[i]
         sum+=float(df[name])*arr[i]
         total+=arr[i]
@@ -40,9 +42,9 @@ def test2():
             arr=[]
 
 
-            for i in range(16):
+            for i in range(25):
                 a='tag'+str(i+1)
-                arr.append(int(request.form[a]))
+                arr.append(int(request.form[a])) #점수기록
 
 
             df=seoul_total()
@@ -52,10 +54,37 @@ def test2():
             df3 = df[df['구'].str.contains('강북구')]
             df4 = df[df['구'].str.contains('강서구')]
 
+            df5 = df[df['구'].str.contains('관악구')]
+            df6 = df[df['구'].str.contains('광진구')]
+            df7 = df[df['구'].str.contains('구로구')]
+            df8 = df[df['구'].str.contains('금천구')]
 
-            dfarr=[df1,df2,df3,df4]
+            df9 = df[df['구'].str.contains('노원구')]
+            df10 = df[df['구'].str.contains('도봉구')]
+            df11 = df[df['구'].str.contains('동대문구')]
+            df12 = df[df['구'].str.contains('동작구')]
 
-            #df1['건강']*arr[0]+df1['건강']*arr[1]+df1['건강']*arr[2]+df1['건강']*arr[3]
+            df13 = df[df['구'].str.contains('마포구')]
+            df14 = df[df['구'].str.contains('서대문구')]
+            df15 = df[df['구'].str.contains('서초구')]
+            df16 = df[df['구'].str.contains('성동구')]
+
+            df17 = df[df['구'].str.contains('성북구')]
+            df18 = df[df['구'].str.contains('송파구')]
+            df19 = df[df['구'].str.contains('양천구')]
+            df20 = df[df['구'].str.contains('영등포구')]
+
+           
+            df21 = df[df['구'].str.contains('용산구')]
+            df22 = df[df['구'].str.contains('은평구')]
+            df23 = df[df['구'].str.contains('종로구')]
+            df24 = df[df['구'].str.contains('중구')]
+
+            df25 = df[df['구'].str.contains('중랑구')]
+
+
+            dfarr=[df1,df2,df3,df4,df5,df6,df7,df8,df9,df10,df11,df12,df13,df14,df15,df16,df17,df18,df19,df20,df21,df22,df23,df24,df25]
+           
 
             health=cal('건강',arr,dfarr)
             edu=cal('교육',arr,dfarr)
@@ -96,7 +125,7 @@ def test2():
             df3 = df3.reset_index(drop=True)
 
             
-            return render_template("mainpage2.html",rank1=list(df3['구']),rank2=list(df3['종합']),dff=df3)
+            return render_template("mainpage2.html",rank1=list(df3['구']),rank2=list(df3['종합']),rank3=list(df3['집값']),dff=df3)
     
   
     return render_template("world2.html")
@@ -138,7 +167,7 @@ def search():
         df3 = df3.reset_index(drop=True)
 
         
-        return render_template("mainpage2.html",rank1=list(df3['구']),rank2=list(df3['종합']),dff=df3)
+        return render_template("mainpage2.html",rank1=list(df3['구']),rank2=list(df3['종합']),rank3=list(df3['집값']),dff=df3)
 
     
        
