@@ -81,14 +81,17 @@
 													<tr>
 													<th>순위</th>
 													<th>살기 좋은 순서</th>  
-													<th>수치</th>             
+													<th>수치</th>
+													<th>집값</th>             
 													</tr>
 												</thead>
 												{% for item in rank1 %}
-													<tr>
-														<td>{{loop.index}}</td>
+													<tr class="ranktable" id='{{item}}' value="123">
+														<!--id에 {{item}} 넣어보기-->
+														<td >{{loop.index}}</td>
 														<td>{{item}}</td>
 														<td>{{rank2[loop.index-1]}}</td>
+														<td>{{rank3[loop.index-1]}}</td>											
 													</tr>
 												{% endfor %}
 												</table>
@@ -314,10 +317,48 @@
 		
         <script>
 
-			
+			$(document).ready(function(){
+
+			$('.ranktable').each(function(i){
+
+				$(this).click(function(){						
+					
+
+					//alert(this.id);
+					table_click(this.id);
+					//alert(document.getElementById("강남구").id);
+					//alert(document.getElementById("중구").id);
+					//alert(document.getElementById("종로").id);
+
+				});
+
+			});
+
+			});
 
             var parameter,ctx;
             var group,group_value;
+
+
+			function table_click(gu){
+
+				var csv_name='static/data/서울종합인프라별2.csv';
+				if(chart!=undefined){
+					chart.destroy();
+				
+				}
+
+				parameter = getParams();
+				ctx = document.getElementById("chart1");
+
+				group="인프라";
+				group_value=gu;
+
+				d3.csv(csv_name)
+				.then(makeChart);
+
+			}
+
 
 
 			function h_click(title_name,file_name,folder_name){
@@ -349,6 +390,8 @@
 			}
 
 
+			//range 옆에 숫자 띄우기
+
 			var rangeSlider = function(){
 			var slider = $('.range-slider'),
 				range = $('.range-slider__range'),
@@ -370,38 +413,10 @@
 			rangeSlider();
 
 			
-			//폐기예정
-			function c_click(){
+			
 
 
 
-				$("#plot3").load("{{ url_for('static', filename='html/mainpage3.html') }}");
-
-
-
-
-
-
-				/*
-				if(chart!=undefined){
-					chart.destroy();
-
-				}
-
-
-				parameter = getParams();
-				ctx = document.getElementById("chart1");
-
-				group="구";
-				group_value="종합";
-
-				
-				
-				
-
-				$('.title').text(dd);
-				*/
-			}
 
 			
 
