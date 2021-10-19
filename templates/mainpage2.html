@@ -53,7 +53,15 @@
 
 							<!-- Header -->
 								<header id="header">
-									<a href="index.html" class="logo"><h2><strong>MUMU MAP</strong></h2></a>
+									<a href="http://127.0.0.1:5000" class="logo"><h2><strong>MUMU MAP</strong></h2></a>
+
+									<!--
+									<ul class="icons">
+										<li><a href="http://127.0.0.1:5000/map">지도</a></li>
+										<li><a href="http://127.0.0.1:5000/w">내 인프라 선호도 알아보기</a></li>
+									</ul>
+								-->
+									<!--
 									<ul class="icons">
 										<li><a href="http://127.0.0.1:5000/map" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
 										<li><a href="http://127.0.0.1:5000/w" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
@@ -61,6 +69,7 @@
 										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 										<li><a href="#" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
 									</ul>
+								-->
 								</header>
 
 							<!-- Banner -->
@@ -114,6 +123,9 @@
 									-->
 									<div id="chart-wrapper">
 										<canvas id="chart1" width="500" height="500"></canvas>
+									</div>
+									<div id="map2">
+
 									</div>	
 
 
@@ -146,7 +158,13 @@
 									</header>
 									<ul>
 										<li>
-											<span class="opener">추천 시스템 컴온</span>
+											<a href="http://127.0.0.1:5000/map">지도</a>
+										</li>
+										<li>
+											<a href="http://127.0.0.1:5000/w">내 인프라 선호도 알아보기</a>
+										</li>
+										<li>
+											<span class="opener">나만의 행복도시</span>
 											<ul>
 											<form method="post">
 
@@ -155,16 +173,28 @@
 													<input class="range-slider__range" type="range" name= 'ran1' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
 												</div>
 												<div class="range-slider">
-													<input class="range-slider__range" type="range" name= 'ran2' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
+													<input class="range-slider__range" type="range" name= 'ran2' value="0" min="0" max="100" step="10" style="float:left">건강2<span style="float:right; right:-1px" class="range-slider__value">0</span>		
 												</div>
 												<div class="range-slider">
-													<input class="range-slider__range" type="range" name= 'ran3' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
+													<input class="range-slider__range" type="range" name= 'ran3' value="0" min="0" max="100" step="10" style="float:left">건강3<span style="float:right" class="range-slider__value">0</span>		
 												</div>
 												<div class="range-slider">
-													<input class="range-slider__range" type="range" name= 'ran4' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
+													<input class="range-slider__range" type="range" name= 'ran4' value="0" min="0" max="100" step="10" style="float:left">건강4<span style="float:right" class="range-slider__value">0</span>		
 												</div>  
-											--> 
-
+											-->
+												{%if score is defined %}
+												<input type='range' name= 'ran1' value={{score[0]}} min="0" max="100" step="10" />건강<br/>
+												<input type='range' name= 'ran2' value={{score[1]}}  min="0" max="100" step="10"/>교육<br/>
+												<input type='range' name= 'ran3' value={{score[2]}}  min="0" max="100" step="10"/>상권<br/>
+												<input type='range' name= 'ran4' value={{score[3]}}  min="0" max="100" step="10"/>생활<br/>
+												<input type='range' name= 'ran5' value={{score[4]}}  min="0" max="100" step="10"/>스포츠<br/>
+												<input type='range' name= 'ran6' value={{score[5]}} min="0" max="100" step="10"/>안전<br/>
+												<input type='range' name= 'ran7' value={{score[6]}}  min="0" max="100" step="10"/>여가<br/>
+												<input type='range' name= 'ran8' value={{score[7]}}  min="0" max="100" step="10"/>체육<br/>
+												<input type='range' name= 'ran9' value={{score[8]}}  min="0" max="100" step="10"/>환경<br/>
+												<input type='range' name= 'ran10' value={{score[9]}}  min="0" max="100" step="10"/>집값<br/>										
+												<input type="submit" value="추천해줘"><br/>
+												{%else%}
 												<input type='range' name= 'ran1' value="0" min="0" max="100" step="10" />건강<br/>
 												<input type='range' name= 'ran2' value="0"  min="0" max="100" step="10"/>교육<br/>
 												<input type='range' name= 'ran3' value="0"  min="0" max="100" step="10"/>상권<br/>
@@ -177,6 +207,7 @@
 												<input type='range' name= 'ran10' value="0"  min="0" max="100" step="10"/>집값<br/>										
 												<input type="submit" value="추천해줘"><br/>
 
+												{%endif%}
 												
 												
 											</form>
@@ -184,108 +215,118 @@
 																				
 											</ul>
 										</li>
+										
+										
 										<li>
-											<span class="show_total" onclick="h_click('평균','서울종합2','seoul_health')">종합</span>
-										</li>
-                                        <li>
-											<span class="opener"><strong>건강</strong></span>
+											<span class="opener"><strong>인프라</strong></span>
 											<ul>
-												<li class="health0" onclick="h_click('평균','서울건강','seoul_health')">종합</li>
-												<li class="health1" onclick="h_click('정신건강증진기관','서울건강','seoul_health')">정신건강증진기관</li>
-                                                <li class="health2" onclick="h_click('의사','서울건강','seoul_health')">의사수</li>
-                                                <li class="health3" onclick="h_click('의료기관병상','서울건강','seoul_health')">의료기관병상수</li>
-												<li class="health4" onclick="h_click('대형병원','서울건강','seoul_health')">대형병원</li>
-												<li class="health5" onclick="h_click('산후조리원','서울건강','seoul_health')">산후조리원</li>
-												<li class="health6" onclick="h_click('안마원','서울건강','seoul_health')">안마원</li>
-												<li class="health7" onclick="h_click('약국','서울건강','seoul_health')">약국</li>
-												<li class="health8" onclick="h_click('병원','서울건강','seoul_health')">병원</li>
-												
+												<li>
+													<span class="show_total" onclick="h_click('평균','서울종합2','seoul_health')"><strong>종합</strong></span>
+												</li>
+												<li>
+													<span class="opener"><strong>건강</strong></span>
+													<ul>
+														<li class="health0" onclick="h_click('평균','서울건강','seoul_health')">종합</li>
+														<li class="health1" onclick="h_click('정신건강증진기관','서울건강','seoul_health')">정신건강증진기관</li>
+														<li class="health2" onclick="h_click('의사','서울건강','seoul_health')">의사수</li>
+														<li class="health3" onclick="h_click('의료기관병상','서울건강','seoul_health')">의료기관병상수</li>
+														<li class="health4" onclick="h_click('대형병원','서울건강','seoul_health')">대형병원</li>
+														<li class="health5" onclick="h_click('산후조리원','서울건강','seoul_health')">산후조리원</li>
+														<li class="health6" onclick="h_click('안마원','서울건강','seoul_health')">안마원</li>
+														<li class="health7" onclick="h_click('약국','서울건강','seoul_health')">약국</li>
+														<li class="health8" onclick="h_click('병원','서울건강','seoul_health')">병원</li>
+														
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>교육</strong></span>
+													<ul>
+														<li class="edu0" onclick="h_click('평균','서울교육','seoul_health')">종합</li>
+														<li class="edu1" onclick="h_click('학교수','서울교육','seoul_health')">학교수</li>
+														<li class="edu2" onclick="h_click('사설학원','서울교육','seoul_health')">사설학원</li>
+														<li class="edu3" onclick="h_click('학생','서울교육','seoul_health')">학생</li>
+														<li class="edu4" onclick="h_click('보육시설','서울교육','seoul_health')">보육시설</li>										
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>안전</strong></span>
+													<ul>
+														<li class="safe0" onclick="h_click('평균','서울안전','seoul_health')">종합</li>
+														<li class="safe1" onclick="h_click('경찰서','서울안전','seoul_health')">경찰서</li>
+														<li class="safe2" onclick="h_click('소방서','서울안전','seoul_health')">소방서</li>
+														<li class="safe3" onclick="h_click('인식','서울안전','seoul_health')">안전인식</li>
+														<li class="safe4" onclick="h_click('cctv','서울안전','seoul_health')">cctv</li>
+														<li class="safe5" onclick="h_click('응급실','서울안전','seoul_health')">응급실</li>
+														<li class="safe6" onclick="h_click('교통사고화재','서울안전','seoul_health')">교통사고화재</li>		
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>여가</strong></span>
+													<ul>
+														<li class="leisure0" onclick="h_click('평균','서울여가','seoul_health')">종합</li>
+														<li class="leisure1" onclick="h_click('PC방','서울여가','seoul_health')">PC방</li>
+														<li class="leisure2" onclick="h_click('오락실','서울여가','seoul_health')">오락실</li>
+														<li class="leisure3" onclick="h_click('노래방','서울여가','seoul_health')">노래방</li>
+														<li class="leisure4" onclick="h_click('영화관','서울여가','seoul_health')">영화관</li>
+														
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>환경</strong></span>
+													<ul>
+														<li class="eco0" onclick="h_click('평균','서울환경','seoul_health')">종합</li>
+														<li class="eco1" onclick="h_click('환경체감도','서울환경','seoul_health')">환경체감도</li>
+														<li class="eco2" onclick="h_click('산업폐수방류량','서울환경','seoul_health')">산업폐수방류량</li>
+														<li class="eco3" onclick="h_click('녹지지역','서울환경','seoul_health')">녹지지역</li>
+														<li class="eco4" onclick="h_click('미세먼지','서울환경','seoul_health')">미세먼지</li>                                             
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>상권</strong></span>
+													<ul>
+														<li class="com0" onclick="h_click('평균','서울상권','seoul_health')">상권</li>                                            
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>생활</strong></span>
+													<ul>
+														<li class="life0" onclick="h_click('평균','서울생활','seoul_health')">종합</li>
+														<li class="life1" onclick="h_click('미용업','서울생활','seoul_health')">미용업</li>
+														<li class="life2" onclick="h_click('세탁업','서울생활','seoul_health')">세탁업</li>
+														<li class="life3" onclick="h_click('목욕장업','서울생활','seoul_health')">목용장업</li>
+														<li class="life4" onclick="h_click('대규모점포','서울생활','seoul_health')">대규모점포</li>
+														<li class="life5" onclick="h_click('편의점','서울생활','seoul_health')">편의점</li>                                              
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>체육</strong></span>
+													<ul>
+														<li class="gym0" onclick="h_click('평균','서울체육','seoul_health')">종합</li>
+														<li class="gym2" onclick="h_click('종합체육시설','서울체육','seoul_health')">종합체육시설</li>
+														<li class="gym3" onclick="h_click('체력단련장','서울체육','seoul_health')">체력단련장</li>
+														<li class="gym4" onclick="h_click('체육도장업','서울체육','seoul_health')">체육도장업</li>                                             
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>스포츠</strong></span>
+													<ul>
+														<li class="sport0" onclick="h_click('평균','서울스포츠','seoul_health')">종합</li>
+														<li class="sport1" onclick="h_click('골프연습장','서울스포츠','seoul_health')">골프연습장</li>
+														<li class="sport2" onclick="h_click('당구장','서울스포츠','seoul_health')">당구장</li>
+														<li class="sport3" onclick="h_click('수영장','서울스포츠','seoul_health')">수영장</li>                                            
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>집값</strong></span>
+													<ul>
+														<li class="estate0" onclick="h_click('집값','서울집값','seoul_health')">집값</li>												                                       
+													</ul>
+												</li>
+
 											</ul>
 										</li>
-                                        <li>
-											<span class="opener">교육</span>
-											<ul>
-												<li class="edu0" onclick="h_click('평균','서울교육','seoul_health')">종합</li>
-												<li class="edu1" onclick="h_click('학교수','서울교육','seoul_health')">학교수</li>
-                                                <li class="edu2" onclick="h_click('사설학원','서울교육','seoul_health')">사설학원</li>
-                                                <li class="edu3" onclick="h_click('학생','서울교육','seoul_health')">학생</li>
-												<li class="edu4" onclick="h_click('보육시설','서울교육','seoul_health')">보육시설</li>										
-											</ul>
-										</li>
-                                        <li>
-											<span class="opener">안전</span>
-											<ul>
-												<li class="safe0" onclick="h_click('평균','서울안전','seoul_health')">종합</li>
-												<li class="safe1" onclick="h_click('경찰서','서울안전','seoul_health')">경찰서</li>
-												<li class="safe2" onclick="h_click('소방서','서울안전','seoul_health')">소방서</li>
-                                                <li class="safe3" onclick="h_click('인식','서울안전','seoul_health')">안전인식</li>
-                                                <li class="safe4" onclick="h_click('cctv','서울안전','seoul_health')">cctv</li>
-												<li class="safe5" onclick="h_click('응급실','서울안전','seoul_health')">응급실</li>
-												<li class="safe6" onclick="h_click('교통사고화재','서울안전','seoul_health')">교통사고화재</li>		
-											</ul>
-										</li>
-                                        <li>
-											<span class="opener">여가</span>
-											<ul>
-												<li class="leisure0" onclick="h_click('평균','서울여가','seoul_health')">종합</li>
-												<li class="leisure1" onclick="h_click('PC방','서울여가','seoul_health')">PC방</li>
-												<li class="leisure2" onclick="h_click('오락실','서울여가','seoul_health')">오락실</li>
-												<li class="leisure3" onclick="h_click('노래방','서울여가','seoul_health')">노래방</li>
-                                                <li class="leisure4" onclick="h_click('영화관','서울여가','seoul_health')">영화관</li>
-                                                
-											</ul>
-										</li>
-                                        <li>
-											<span class="opener">환경</span>
-											<ul>
-												<li class="eco0" onclick="h_click('평균','서울환경','seoul_health')">종합</li>
-												<li class="eco1" onclick="h_click('환경체감도','서울환경','seoul_health')">환경체감도</li>
-												<li class="eco2" onclick="h_click('산업폐수방류량','서울환경','seoul_health')">산업폐수방류량</li>
-												<li class="eco3" onclick="h_click('녹지지역','서울환경','seoul_health')">녹지지역</li>
-                                                <li class="eco4" onclick="h_click('미세먼지','서울환경','seoul_health')">미세먼지</li>                                             
-											</ul>
-										</li>
-										<li>
-											<span class="opener">상권</span>
-											<ul>
-												<li class="com0" onclick="h_click('평균','서울상권','seoul_health')">상권</li>                                            
-											</ul>
-										</li>
-										<li>
-											<span class="opener">생활</span>
-											<ul>
-												<li class="life0" onclick="h_click('평균','서울생활','seoul_health')">종합</li>
-												<li class="life1" onclick="h_click('미용업','서울생활','seoul_health')">미용업</li>
-												<li class="life2" onclick="h_click('세탁업','서울생활','seoul_health')">세탁업</li>
-												<li class="life3" onclick="h_click('목욕장업','서울생활','seoul_health')">목용장업</li>
-                                                <li class="life4" onclick="h_click('대규모점포','서울생활','seoul_health')">대규모점포</li>
-												<li class="life5" onclick="h_click('편의점','서울생활','seoul_health')">편의점</li>                                              
-											</ul>
-										</li>
-										<li>
-											<span class="opener">체육</span>
-											<ul>
-												<li class="gym0" onclick="h_click('평균','서울체육','seoul_health')">종합</li>
-												<li class="gym2" onclick="h_click('종합체육시설','서울체육','seoul_health')">종합체육시설</li>
-												<li class="gym3" onclick="h_click('체력단련장','서울체육','seoul_health')">체력단련장</li>
-                                                <li class="gym4" onclick="h_click('체육도장업','서울체육','seoul_health')">체육도장업</li>                                             
-											</ul>
-										</li>
-										<li>
-											<span class="opener">스포츠</span>
-											<ul>
-												<li class="sport0" onclick="h_click('평균','서울스포츠','seoul_health')">종합</li>
-												<li class="sport1" onclick="h_click('골프연습장','서울스포츠','seoul_health')">골프연습장</li>
-												<li class="sport2" onclick="h_click('당구장','서울스포츠','seoul_health')">당구장</li>
-												<li class="sport3" onclick="h_click('수영장','서울스포츠','seoul_health')">수영장</li>                                            
-											</ul>
-										</li>
-										<li>
-											<span class="opener">집값</span>
-											<ul>
-												<li class="estate0" onclick="h_click('집값','서울집값','seoul_health')">집값</li>												                                       
-											</ul>
-										</li>
+
+										
 
 									</ul>
 
@@ -313,7 +354,10 @@
 		<script src="https://d3js.org/d3.v5.min.js"></script>
 
 
-	-->
+		<script>
+			//$("#map2").load('/static/html/Seoul_Population.html');
+			//$("#map").load('/static/html/world/1.html');
+		</script>	
 		
         <script>
 
@@ -356,6 +400,10 @@
 
 				d3.csv(csv_name)
 				.then(makeChart);
+
+				
+				document.getElementById('chart-wrapper').scrollIntoView();
+
 
 			}
 
