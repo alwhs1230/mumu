@@ -95,14 +95,16 @@ def test2():
             leisure=cal('여가',arr,dfarr)
             gym=cal('체육',arr,dfarr)
             eco=cal('환경',arr,dfarr)
-            
+            price=cal('집값',arr,dfarr)
             
             
 
-            return render_template("mainpage2.html",score=[round(health,1),round(edu,1)
-            ,round(com,1),round(life,1),round(sport,1),round(safe,1),round(leisure,1),round(gym,1),round(eco,1)])
-            #return render_template("mainpage2.html",ran1=round(health,1), ran2=round(edu,1),
-            #ran3=round(com,1),ran4=round(life,1),ran5=round(sport,1),ran6=round(safe,1),ran7=round(leisure,1),ran8=round(gym,1),ran9=round(eco,1))
+            return render_template("mainpage2.html",score=[round(health,1)*100,round(edu,1)*100
+            ,round(com,1)*100,round(life,1)*100,round(sport,1)*100,round(safe,1)*100,round(leisure,1)*100,round(gym,1)*100,round(eco,1)*100
+            ,round(price,1)*100])
+                     
+
+            
 
         except:
             r1=int(request.form['ran1'])/100
