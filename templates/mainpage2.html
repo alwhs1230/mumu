@@ -1,0 +1,449 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>MUMU MAP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+		<style>
+			table.type10 {
+			  border-collapse: collapse;
+			  text-align: left;
+			  line-height: 1.5;
+			  border-top: 1px solid #ccc;
+			  border-bottom: 1px solid #ccc;
+			  margin: 20px 10px;
+			}
+			table.type10 thead th {
+			  width: 150px;
+			  padding: 10px;
+			  font-weight: bold;
+			  vertical-align: top;
+			  color: #fff;
+			  background: #e7708d;
+			  margin: 20px 10px;
+			}
+			table.type10 tbody th {
+			  width: 150px;
+			  padding: 10px;
+			}
+			table.type10 td {
+			  width: 350px;
+			  padding: 10px;
+			  vertical-align: top;
+			}
+			table.type10 .even {
+			  background: #fdf3f5;
+			}
+			
+			
+		</style>
+
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+
+							<!-- Header -->
+								<header id="header">
+									<a href="http://127.0.0.1:5000" class="logo"><h2><strong>MUMU MAP</strong></h2></a>
+
+									<!--
+									<ul class="icons">
+										<li><a href="http://127.0.0.1:5000/map">지도</a></li>
+										<li><a href="http://127.0.0.1:5000/w">내 인프라 선호도 알아보기</a></li>
+									</ul>
+								-->
+									<!--
+									<ul class="icons">
+										<li><a href="http://127.0.0.1:5000/map" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+										<li><a href="http://127.0.0.1:5000/w" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+										<li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
+										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+										<li><a href="#" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
+									</ul>
+								-->
+								</header>
+
+							<!-- Banner -->
+								<section id="banner">
+									<div class="content">
+										<header>
+											<h2 class="title">통계</h2>
+											
+										</header>
+										
+										<ul class="actions">
+											<li><a href="#" class="button big">더 알아보기</a></li>
+										</ul>
+                                        <div id="plot3">
+											{%if rank1 is defined%}
+												<table class="type10">
+												<thead>
+													<tr>
+													<th>순위</th>
+													<th>살기 좋은 순서</th>  
+													<th>수치</th>
+													<th>집값</th>             
+													</tr>
+												</thead>
+												{% for item in rank1 %}
+													<tr class="ranktable" id='{{item}}' value="123">
+														<!--id에 {{item}} 넣어보기-->
+														<td >{{loop.index}}</td>
+														<td>{{item}}</td>
+														<td>{{rank2[loop.index-1]}}</td>
+														<td>{{rank3[loop.index-1]}}</td>											
+													</tr>
+												{% endfor %}
+												</table>
+											{%endif %}
+                                        </div>
+									</div>
+
+									<div id="chart-wrapper">
+										<canvas id="chart1" width="500" height="500"></canvas>
+									</div>
+									<div id="map2">
+
+									</div>	
+
+
+								</section>
+
+							
+
+
+							
+
+						</div>
+					</div>
+
+				<!-- Sidebar -->
+					<div id="sidebar">
+						<div class="inner">
+
+							<!-- Search -->
+								<section id="search" class="alt">
+									<form method="post">
+										<input type="text" name="keyword"  placeholder="Search" autocomplete=”off”/>
+                                        <input type="submit" value="검색">
+									</form>                                
+								</section>
+
+							<!-- Menu -->
+								<nav id="menu">
+									<header class="major">
+										<h2>메뉴</h2>
+									</header>
+									<ul>
+										<li>
+											<a href="http://127.0.0.1:5000/map">지도</a>
+										</li>
+										<li>
+											<a href="http://127.0.0.1:5000/w">내 인프라 선호도 알아보기</a>
+										</li>
+										<li>
+											<span class="opener">나만의 행복도시</span>
+											<ul>
+											<form method="post">
+
+												<!--
+												<div class="range-slider">
+													<input class="range-slider__range" type="range" name= 'ran1' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
+												</div>
+												<div class="range-slider">
+													<input class="range-slider__range" type="range" name= 'ran2' value="0" min="0" max="100" step="10" style="float:left">건강2<span style="float:right; right:-1px" class="range-slider__value">0</span>		
+												</div>
+												<div class="range-slider">
+													<input class="range-slider__range" type="range" name= 'ran3' value="0" min="0" max="100" step="10" style="float:left">건강3<span style="float:right" class="range-slider__value">0</span>		
+												</div>
+												<div class="range-slider">
+													<input class="range-slider__range" type="range" name= 'ran4' value="0" min="0" max="100" step="10" style="float:left">건강4<span style="float:right" class="range-slider__value">0</span>		
+												</div>  
+											-->
+												{%if score is defined %}
+												<input type='range' name= 'ran1' value={{score[0]}} min="0" max="100" step="10" />안전<br/>
+												<input type='range' name= 'ran2' value={{score[1]}}  min="0" max="100" step="10"/>건강<br/>
+												<input type='range' name= 'ran3' value={{score[2]}}  min="0" max="100" step="10"/>환경<br/>
+												<input type='range' name= 'ran4' value={{score[3]}}  min="0" max="100" step="10"/>경제<br/>
+												<input type='range' name= 'ran5' value={{score[4]}}  min="0" max="100" step="10"/>교육<br/>
+												<input type='range' name= 'ran6' value={{score[5]}} min="0" max="100" step="10"/>사회<br/>
+												<input type='range' name= 'ran7' value={{score[6]}}  min="0" max="100" step="10"/>여가<br/>
+												
+																						
+												<input type="submit" value="추천해줘"><br/>
+												{%else%}
+												<input type='range' name= 'ran1' value="0" min="0" max="100" step="10" />안전<br/>
+												<input type='range' name= 'ran2' value="0"  min="0" max="100" step="10"/>건강<br/>
+												<input type='range' name= 'ran3' value="0"  min="0" max="100" step="10"/>환경<br/>
+												<input type='range' name= 'ran4' value="0"  min="0" max="100" step="10"/>경제<br/>
+												<input type='range' name= 'ran5' value="0"  min="0" max="100" step="10"/>교육<br/>
+												<input type='range' name= 'ran6' value="0" min="0" max="100" step="10"/>사회<br/>
+												<input type='range' name= 'ran7' value="0"  min="0" max="100" step="10"/>여가<br/>
+																					
+												<input type="submit" value="추천해줘"><br/>
+
+												{%endif%}
+												
+												
+											</form>
+												{{score}}
+																				
+											</ul>
+										</li>
+										
+										
+										<li>
+											<span class="opener"><strong>인프라</strong></span>
+											<ul>
+												<li>
+													<span class="show_total" onclick="h_click('행복역량지수','행복역량지수','최종22','total')"><strong>종합</strong></span>
+												</li>
+												<li>
+													<span class="opener"><strong>안전</strong></span>
+													<ul>
+														<li class="safe0" onclick="h_click('평균','평균','안전2','safe')">종합</li>
+														<li class="safe1" onclick="h_click('사회안전에','사회안전에 대한 인식','안전2','safe')">사회안전에 대한 인식</li>
+														<li class="safe2" onclick="h_click('cctv','cctv','안전2','safe')">cctv</li>
+														<li class="safe3" onclick="h_click('응급의료기관','응급의료기관','안전2','safe')">응급의료기관</li>
+														<li class="safe4" onclick="h_click('지역경찰관서','지역경찰관서 수','안전2','safe')">지역경찰관서 수</li>
+														<li class="safe5" onclick="h_click('교통사고','교통사고 및 화재','안전2','safe')">교통사고 및 화재</li>
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>건강</strong></span>
+													<ul>
+														<li class="helath0" onclick="h_click('평균','평균','건강2','health')">종합</li>
+														<li class="helath1" onclick="h_click('건강수준','건강수준 인지율','건강2','health')">건강수준 인지율</li>
+														<li class="helath2" onclick="h_click('정신건강증진기관','정신건강증진기관 수','건강2','health')">정신건강증진기관 수</li>
+														<li class="helath3" onclick="h_click('의사수','의사수','건강2','health')">의사수</li>
+														<li class="helath4" onclick="h_click('건강생활실천율','건강생활실천율','건강2','health')">건강생활실천율</li>
+														<li class="helath5" onclick="h_click('의료기관병상수','의료기관병상수','건강2','health')">의료기관병상수</li>											
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>환경</strong></span>
+													<ul>
+														<li class="eco0" onclick="h_click('평균','평균','환경2','eco')">종합</li>
+														<li class="eco1" onclick="h_click('환경체감도','환경체감도','환경2','eco')">환경체감도</li>
+														<li class="eco2" onclick="h_click('산업폐수','산업폐수 방류량','환경2','eco')">산업폐수 방류량</li>
+														<li class="eco3" onclick="h_click('녹지지역','녹지지역 비율','환경2','eco')">녹지지역 비율</li>
+														<li class="eco4" onclick="h_click('미세먼지','미세먼지','환경2','eco')">미세먼지</li>
+														<li class="eco5" onclick="h_click('생활폐기물배출량','생활폐기물배출량','환경2','eco')">생활폐기물배출량</li>
+															
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>경제</strong></span>
+													<ul>
+														<li class="economy0" onclick="h_click('평균','평균','경제2','economy')">종합</li>
+														<li class="economy1" onclick="h_click('1인당','1인당 지역내총생산','경제2','economy')">1인당 지역내총생산</li>
+														<li class="economy2" onclick="h_click('사업체수','사업체수','경제2','economy')">사업체수</li>
+														<li class="economy3" onclick="h_click('종사자수','종사자수','경제2','economy')">종사자수</li>
+														<li class="economy4" onclick="h_click('국민기초생활보장','국민기초생활보장 수급자비율','경제2','economy')">기초생활수급자 비율</li>
+														<li class="economy5" onclick="h_click('영세자영업자','영세자영업자','경제2','economy')">영세자영업자</li>
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>교육</strong></span>
+													<ul>
+														<li class="edu0" onclick="h_click('평균','평균','환경2','edu')">종합</li>
+														<li class="edu1" onclick="h_click('교원','교원 1인당 학생수','환경2','edu')">교원 1인당 학생수</li>
+														<li class="edu2" onclick="h_click('보육시설','보육시설 수','환경2','edu')">보육시설 수</li>
+														<li class="edu3" onclick="h_click('학교','학교 수','환경2','edu')">학교 수</li>
+														<li class="edu4" onclick="h_click('사설학원','사설학원 수','환경2','edu')">사설학원 수</li>
+								
+                                            
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>사회</strong></span>
+													<ul>
+														<li class="so0" onclick="h_click('평균','평균','사회2','social')">종합</li>
+														<li class="so1" onclick="h_click('자살률','자살률','사회2','social')">자살률</li>  
+														<li class="so2" onclick="h_click('1인가구','1인가구 비율','사회2','social')">1인가구 비율</li>  
+														<li class="so3" onclick="h_click('독거노인가구','독거노인가구','사회2','social')">독거노인가구 비율</li>  
+														<li class="so4" onclick="h_click('사회적기업','사회적기업 수','사회2','social')">사회적기업 수</li>  
+														<li class="so5" onclick="h_click('가족관계','가족관계 만족도','사회2','social')">가족관계 만족도</li>                                              
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>여가</strong></span>
+													<ul>
+														<li class="leisure0" onclick="h_click('평균','평균','여가2','leisure')">종합</li>
+														<li class="leisure1" onclick="h_click('여가활용','여가활용 만족도','여가2','leisure')">여가활용 만족도</li>
+														<li class="leisure2" onclick="h_click('노인여가복지시설','노인여가복지시설 수','여가2','leisure')">노인여가복지시설 수</li>
+														<li class="leisure3" onclick="h_click('도서관','도서관 수','여가2','leisure')">도서관 수</li>
+														<li class="leisure4" onclick="h_click('문화기반시설','문화기반시설 수','여가2','leisure')">문화기반시설 수</li>
+														<li class="leisure5" onclick="h_click('체육관련','체육관련 여가시설 수','여가2','leisure')">체육관련 여가시설 수</li>
+														
+														                                           
+													</ul>
+												</li>
+												<li>
+													<span class="opener"><strong>집값</strong></span>
+													<ul>
+														<li class="estate0" onclick="h_click('집값','집값','집값2','price')">집값</li>												                                       
+													</ul>
+												</li>
+
+											</ul>
+										</li>
+
+										
+
+									</ul>
+
+								</nav>
+
+							
+
+							
+
+							<!-- Footer -->
+								<footer id="footer">
+									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+								</footer>
+
+						</div>
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.0.4/d3.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+		<script src="{{ url_for('static', filename='js/script.js') }}" ></script>
+		<script src="https://d3js.org/d3.v5.min.js"></script>
+
+
+	
+		
+        <script>
+
+			$(document).ready(function(){  //추천페이지의 테이블 클릭할때 이벤트
+				$('.ranktable').each(function(i){
+
+					$(this).click(function(){						
+						
+						table_click(this.id);
+					});
+
+				});
+			});
+
+            var parameter,ctx;
+            var group,group_value;
+
+
+			function table_click(gu){ //추천페이지의 테이블 행 클릭하면 차트보여주기
+
+				var csv_name='static/data2/행열2.csv';
+				if(chart!=undefined){
+					chart.destroy();
+				
+				}
+
+				parameter = getParams();
+				ctx = document.getElementById("chart1");
+
+				group="시도";
+				group_value=gu;
+
+				d3.csv(csv_name)
+				.then(makeChart);
+
+				
+				document.getElementById('chart-wrapper').scrollIntoView();
+
+
+			}
+
+
+
+			function h_click(name,title_name,file_name,folder_name){ //각 인프라 누르면 테이블 보여주기
+
+				var str='/static/html/mainpage/'+folder_name+'/'+name+'.html'; //테이블 그리기
+				
+				
+				var csv_name='static/data/'+file_name+'.csv'; //차트 그리기 지금은 data2를 data로 해놔서 막아놨음
+
+				$("#plot3").load(str);
+
+				if(chart!=undefined){
+					chart.destroy();
+				
+				}
+
+				$('.title').text(title_name);
+
+
+				parameter = getParams();
+				ctx = document.getElementById("chart1");
+
+				group="시도";
+				group_value=title_name;
+
+				d3.csv(csv_name)
+				.then(makeChart);
+
+			}
+
+
+			//range 옆에 숫자 띄우기
+
+			var rangeSlider = function(){
+			var slider = $('.range-slider'),
+				range = $('.range-slider__range'),
+				value = $('.range-slider__value');
+				
+			slider.each(function(){
+
+				value.each(function(){
+				var value = $(this).prev().attr('value');
+				$(this).html(value);
+				});
+
+				range.on('input', function(){
+				$(this).next(value).html(this.value);
+				});
+			});
+			};
+
+			rangeSlider();
+
+			
+			
+
+
+
+
+			
+
+        </script>
+
+
+		
+
+			<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/browser.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/util.js') }}"></script>
+			<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+			
+
+
+
+	</body>
+</html>
