@@ -4,6 +4,7 @@ import pandas as pd
 import time
 import platform 
 from pyarrow import NullType, csv
+from find import find_city
 
 app = Flask(__name__)
 
@@ -135,32 +136,32 @@ def test():
 @app.route('/',methods = ['GET', 'POST'])
 def search():
     if request.method=='POST':
-
-       
-        r1=int(request.form['ran1'])/100
-        r2=int(request.form['ran2'])/100
-        r3=int(request.form['ran3'])/100
-        r4=int(request.form['ran4'])/100
-        r5=int(request.form['ran5'])/100
-        r6=int(request.form['ran6'])/100
-        r7=int(request.form['ran7'])/100
-       
-
-
-               
-        #df=seoul_total()
-        df=korea_total()
+        temp = request.form.get("recom_btn")
+        if temp == "추천해줘":
+            r1=int(request.form['ran1'])/100
+            r2=int(request.form['ran2'])/100
+            r3=int(request.form['ran3'])/100
+            r4=int(request.form['ran4'])/100
+            r5=int(request.form['ran5'])/100
+            r6=int(request.form['ran6'])/100
+            r7=int(request.form['ran7'])/100
+            
+            #df=seoul_total()
+            df=korea_total()
         
-        df['종합'] = ''        
-        df['종합']=(df['안전']*r1+df['건강']*r2+df['환경']*r3+df['경제']*r4+df['교육']*r5+df['사회']*r6+df['여가']*r7)/(r1+r2+r3+r4+r5+r6+r7)
-        df['종합']=round(df['종합'],3)
-        df['집값']=round(df['아파트매매가'])
-        df3 = df.sort_values(by='종합',ascending=False)
-        df3 = df3.reset_index(drop=True)
+            df['종합'] = ''        
+            df['종합']=(df['안전']*r1+df['건강']*r2+df['환경']*r3+df['경제']*r4+df['교육']*r5+df['사회']*r6+df['여가']*r7)/(r1+r2+r3+r4+r5+r6+r7)
+            df['종합']=round(df['종합'],3)
+            df['집값']=round(df['아파트매매가'])
+            df3 = df.sort_values(by='종합',ascending=False)
+            df3 = df3.reset_index(drop=True)
 
         
-        return render_template("mainpage2.html",rank1=list(df3['시도']),rank2=list(df3['종합']),rank3=list(df3['집값']))
-
+            return render_template("mainpage2.html",rank1=list(df3['시도']),rank2=list(df3['종합']),rank3=list(df3['집값']))
+        elif temp=="검색":
+            name = request.form['search']
+            tier1,tier2,tier3,tier1_price,tier2_price,tier3_price = find_city(name)
+            return render_template("mainpage2.html",tier1=tier1,tier2=tier2,tier3=tier3,tier1_price=tier1_price,tier2_price=tier2_price,tier3_price=tier3_price,zip=zip)
     
        
 

@@ -105,6 +105,41 @@
 												{% endfor %}
 												</table>
 											{%endif %}
+											{%if tier1 is defined%}
+											<table class="type10">
+											<thead>
+												<tr>
+												<th>티어</th>
+												<th>도시</th>
+												<th>아파트매매가(평당)</th>         
+												</tr>
+											</thead>
+												{% for item,price in zip(tier1,tier1_price) %}
+													<tr class="ranktable" id='{{item}}' value="123">
+														<!--id에 {{item}} 넣어보기-->
+														<td>1</td>
+														<td>{{item}}</td>
+														<td>{{price}}</td>									
+													</tr>
+												{% endfor %}
+												{% for item,price in zip(tier2,tier2_price) %}
+													<tr class="ranktable" id='{{item}}' value="123">
+														<!--id에 {{item}} 넣어보기-->
+														<td>2</td>
+														<td>{{item}}</td>
+														<td>{{price}}</td>										
+													</tr>
+												{% endfor %}
+												{% for item,price in zip(tier3,tier3_price) %}
+													<tr class="ranktable" id='{{item}}' value="123">
+														<!--id에 {{item}} 넣어보기-->
+														<td>3</td>
+														<td>{{item}}</td>
+														<td>{{price}}</td>										
+													</tr>
+												{% endfor %}
+											</table>
+											{%endif%}
                                         </div>
 									</div>
 
@@ -199,7 +234,15 @@
 																				
 											</ul>
 										</li>
-										
+										<li>
+											<span class="opener"><strong>집값추천</strong></span>
+											<ul>
+												<form method="post">
+													<input type='text' name= 'search' value="" /><br/>
+													<input type="submit" name="recom_btn" value="검색"><br/>
+												</form>
+											</ul>
+										</li>
 										
 										<li>
 											<span class="opener"><strong>인프라</strong></span>
