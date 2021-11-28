@@ -2,7 +2,8 @@ from flask import Flask,render_template,request,redirect,url_for
 import matplotlib.pyplot as plt
 import pandas as pd
 import time
-import platform 
+import platform
+import random
 from pyarrow import NullType, csv
 from find import find_city
 
@@ -10,7 +11,7 @@ app = Flask(__name__)
 
 def korea_total():
     df = csv.read_csv('static\data2\최종22.csv').to_pandas()
-    return df   
+    return df
 
 def cal(name,arr,dfarr):
     sum=0
@@ -126,7 +127,6 @@ def test2():
 
 @app.route('/map',methods = ['GET', 'POST'])
 def test():
-  
     return render_template("Seoul_Population.html")
 
 
@@ -168,6 +168,27 @@ def search():
     
     return render_template("mainpage2.html")
 
+@app.route('/ajax',methods = ['GET'])
+def ajax():
+    data = korea_total()
+    d1 = random.randrange(0, 229)
+    while (True):
+        d2 = random.randrange(0, 229)
+        if data.iloc[d1]['군집'] == data.iloc[d2]['군집']:
+            d2 = random.randrange(0, 229)
+        else:
+            break
+
+    d = data.iloc[[d1,d2]].drop(['집값','군집','아파트매매가'], axis=1)
+    d.loc[:, '안전':'행복역량지수'] = 5 * d.loc[:, '안전': '행복역량지수']
+    d = d.to_json(orient='split')
+
+    return d
+
+
+@app.route('/ajaxtest')
+def ajaxtest():
+    return render_template("world3.html")
 
 
  

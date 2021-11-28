@@ -1,0 +1,352 @@
+<!--index.html-->
+<html>
+<head>
+  <title>mumu</title>
+	<meta charset="utf-8">
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+	<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+  <style>
+		img{
+			width: 500px;
+			height: 500px;
+		}
+
+		#d1{
+      border: 2px solid black;
+			float:left;
+			width:40%;
+      margin-left: 8%;
+      margin-right: 2%;
+      margin-top: 10px;
+      margin-bottom: 10%x;
+		}
+
+		#d2{
+      border: 2px solid black;
+			float:right;
+			width:40%;
+      margin-left: 2%;
+      margin-right: 8%;
+      margin-top: 10px;
+      margin-bottom: 10%;
+		}
+
+		.bt1{
+			width: 40%;
+		  height: 10%;
+      margin-right: 2%;
+
+			background:#f56a6a;
+			color:#fff;
+			border:none;
+			position:relative;
+			padding:0 2em;
+			cursor:pointer;
+			transition:800ms ease all;
+			outline:none;
+		}
+
+    .bt2{
+      width: 40%;
+		  height: 10%;
+      margin-left: 2%;
+
+			background:#f56a6a;
+			color:#fff;
+			border:none;
+			position:relative;
+			padding:0 2em;
+			cursor:pointer;
+			transition:800ms ease all;
+			outline:none;
+    }
+
+	</style>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <center>
+	<h1>괜찮아 보이는 곳을 골라주세요!</h1>
+	<h2 class="inpra" id='round'>
+  </h2>
+
+  <div id='buttons'>
+		<button class="bt1"   onclick="select(0); chartRender();">선택</button>
+		<button class="bt2"   onclick="select(1); chartRender();">선택</button>
+	</div>
+  <span id = 'd1'>
+    <canvas id="Chart1" width="300" height="300"></canvas>
+  </span>
+  <span id = 'd2'>
+    <canvas id="Chart2" width="300" height="300"></canvas>
+  </span>
+  <button id="resultButton" class="btn btn-primary" data-title="결과보기" style="width: 100%; display: none;"
+   data-toggle="modal" data-target="#result" onClick="page_move('http://127.0.0.1:5000/');">결과보기</button>
+
+</body>
+
+<script>
+  var chart = new Array(2);
+  var round = 16;
+  var selected = new Array(new Array());
+  var category = new Array('안전','건강','환경','경제','교육','사회','여가','행복역량지수');
+  var swap = 0;
+  var i = 0;
+  var j = 0;
+  var point = new Array(0,0,0,0,0,0,0,0);
+  document.getElementById('round').innerHTML = round + '강';
+
+  function getData(num) {
+    var obj;
+    if(round == 16) {
+      $.ajax({
+        type: 'GET',
+        url: '{{url_for("ajax")}}',
+        async: false,
+        success: function(response){
+          obj = JSON.parse(response);
+        },
+        error: function(request, status, error){
+            alert('ajax 통신 실패')
+            alert(error);
+        }
+      })
+
+      return obj;
+    } else {
+      return null
+    }
+  }
+
+
+  function chartRender() {
+    var obj = getData();
+    var ctx1 = document.getElementById('Chart1').getContext('2d');
+    var ctx2 = document.getElementById('Chart2').getContext('2d');
+    document.getElementById('round').innerHTML = round + '강';
+    if(round == 2) {
+      document.getElementById('round').innerHTML = '결승';
+    }
+
+    var chart1;
+    var chart2;
+    if(obj != null) {
+      var labels = obj['columns'].slice(1);
+
+      var data = obj['data'];
+      var config1 = {
+          type: 'radar',
+          data: {
+              labels: labels,
+              datasets : [{
+                  label:data[0][0] + ' 카테고리별 지수',
+                  data: data[0].slice(1),
+                  backgroundColor:'rgba(255, 99, 132, 0.4)',
+                  borderColor:'rgba(255, 99, 132, 1)',
+                  pointBackgroundColor:'rgba(255, 99, 132, 1)',
+                  pointBorderColor:"#fff",
+                  pointHoverBackgroundColor:'#fff',
+                  pointHoverBorderColor:'rgba(255, 99, 132, 1)',
+                  borderWidth: 2
+              }]
+            },
+            options : {
+              scale: {
+                ticks: {
+                  beginAtZero: true,
+                  max: 5,
+                  min: 0,
+                  stepSize: 1
+                }
+              },
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+                callbacks: {
+                  title: function (tooltipItem, data) {
+                    return data['labels'][tooltipItem[0]['index']];
+                  },
+                  label: function(tooltipItem, data) {
+                    return data['datasets'][0]['data'][tooltipItem['index']] + '점';
+                  }
+                }
+              }
+        }
+      }
+      var config2 = {
+          type: 'radar',
+          data: {
+              labels: labels,
+              datasets : [{
+                  label:data[1][0] + '카테고리별 지수',
+                  data: data[1].slice(1),
+                  backgroundColor:'rgba(255, 99, 132, 0.4)',
+                  borderColor:'rgba(255, 99, 132, 1)',
+                  pointBackgroundColor:'rgba(255, 99, 132, 1)',
+                  pointBorderColor:"#fff",
+                  pointHoverBackgroundColor:'#fff',
+                  pointHoverBorderColor:'rgba(255, 99, 132, 1)',
+                  borderWidth: 2
+              }]
+            },
+            options : {
+              scale: {
+                ticks: {
+                  beginAtZero: true,
+                  max: 5,
+                  min: 0,
+                  stepSize: 1
+                }
+              },
+              tooltips: {
+                mode: 'index',
+                intersect: false,
+                callbacks: {
+                  title: function (tooltipItem, data) {
+                    return data['labels'][tooltipItem[0]['index']];
+                  },
+                  label: function(tooltipItem, data) {
+                    return data['datasets'][0]['data'][tooltipItem['index']] + '점';
+                  }
+                }
+              }
+            }
+          }
+
+          if(chart[0] == null) {
+            chart[0] = new Chart(ctx1, config1);
+            chart[1] = new Chart(ctx2, config2);
+          } else {
+            chart[0].destroy();
+            chart[1].destroy();
+            chart[0] = new Chart(ctx1, config1);
+            chart[1] = new Chart(ctx2, config2);
+          }
+
+      } else {
+        config1 = selected[swap-1][j];
+        config2 = selected[swap-1][j+1];
+        j += 2;
+
+        chart[0].destroy();
+        chart[1].destroy();
+        chart[0] = new Chart(ctx1, config1);
+        chart[1] = new Chart(ctx2, config2);
+      }
+  }
+
+  function resultRender() {
+    var table = document.createElement('table');
+    var thead = document.createElement('thead');
+    var tbody = document.createElement('tbody');
+    var sum = 0
+
+    for(var i = 0; i < point.length;i++) {
+      sum += point[i];
+    }
+
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    var row_1 = document.createElement('tr');
+    var heading_1 = document.createElement('th');
+    heading_1.innerHTML = "카테고리";
+    var heading_2 = document.createElement('th');
+    heading_2.innerHTML = "점수";
+
+    row_1.appendChild(heading_1);
+    row_1.appendChild(heading_2);
+    thead.appendChild(row_1);
+
+    for(var i = 0; i < point.length; i++) {
+      var row = document.createElement('tr');
+      var row_data_1 = document.createElement('td');
+      row_data_1.innerHTML = category[i];
+      var row_data_2 = document.createElement('td');
+      point[i] = parseInt(point[i]/10);
+      row_data_2.innerHTML = point[i];
+
+      row.appendChild(row_data_1);
+      row.appendChild(row_data_2);
+      tbody.appendChild(row);
+    }
+
+    // Adding the entire table to the body tag
+    document.getElementById('d2').appendChild(table);
+  }
+
+  function select(num) {
+    console.log(round);
+    selected[swap][i] = chart[num].config;
+    console.log(chart[num].config['data']['datasets'][0]['label']);
+    var data = chart[num].data.datasets[0]['data'];
+
+
+    for(var k = 0; k < data.length ; k++) {
+      point[k] = point[k] + 10*data[k]
+    }
+
+    i += 1;
+
+    if(i == round/2) {
+      round = round/2;
+      i = 0;
+      j = 0;
+      shuffle(selected[swap]);
+      swap += 1;
+      selected[swap] = new Array();
+    }
+
+    if(round == 1) {
+      document.getElementById('buttons').style.display='none';
+      document.getElementById('round').style.display = 'none';
+      document.getElementById('resultButton').style.display = 'inline';
+      document.getElementById('Chart2').getContext('2d').canvas.hidden = true;
+      resultRender();
+    }
+  }
+
+  function shuffle(array) { array.sort(() => Math.random() - 0.5); }
+
+  function page_move(url) {
+        var form = document.createElement("form");
+        var input = [];
+        var pointdata = JSON.stringify(point);
+        console.log(pointdata)
+
+        form.action = url;
+        form.method = "post";
+
+        for (var i = 0; i < point.length; i++) {
+            input[i] = document.createElement("input");
+            input[i].setAttribute("type", "hidden");
+            input[i].setAttribute('name', 'ran'+(i+1));
+            input[i].setAttribute("value", point[i]);
+            input[i].setAttribute("min","0");
+            input[i].setAttribute("max","100");
+            input[i].setAttribute("step","10");
+
+            form.appendChild(input[i]);
+        }
+
+        button = document.createElement("input");
+        button.setAttribute("type","hidden");
+        button.setAttribute("name","recom_btn");
+        button.setAttribute("value","추천해줘")
+        form.appendChild(button);
+
+        document.body.appendChild(form);
+        console.log();
+        form.submit();
+    }
+
+  chartRender();
+</script>
+</html>
