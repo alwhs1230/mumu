@@ -33,10 +33,6 @@ def worldcup():
 
 
 
-@app.route('/map',methods = ['GET', 'POST'])
-def test():
-    return render_template("Seoul_Population.html")
-
 
 @app.route('/',methods = ['GET', 'POST'])
 def search():

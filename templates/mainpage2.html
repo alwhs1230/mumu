@@ -64,10 +64,6 @@
 											
 										</header>
 										
-										<!--
-										<ul class="actions">
-											<li><a href="#" class="button big">더 알아보기</a></li>
-										</ul>-->
 
                                         <div id="plot3">
 											{%if rank1 is defined%}
@@ -158,9 +154,6 @@
 									</header>
 									<ul>
 										<li>
-											<a href="http://127.0.0.1:5000/map">지도</a>
-										</li>
-										<li>
 											<a href="http://127.0.0.1:5000/w">내 인프라 선호도 알아보기</a>
 										</li>
 										<li>
@@ -168,20 +161,7 @@
 											<ul>
 											<form method="post">
 
-												<!--
-												<div class="range-slider">
-													<input class="range-slider__range" type="range" name= 'ran1' value="0" min="0" max="100" step="10" style="float:left">건강<span style="float:right" class="range-slider__value">0</span>		
-												</div>
-												<div class="range-slider">
-													<input class="range-slider__range" type="range" name= 'ran2' value="0" min="0" max="100" step="10" style="float:left">건강2<span style="float:right; right:-1px" class="range-slider__value">0</span>		
-												</div>
-												<div class="range-slider">
-													<input class="range-slider__range" type="range" name= 'ran3' value="0" min="0" max="100" step="10" style="float:left">건강3<span style="float:right" class="range-slider__value">0</span>		
-												</div>
-												<div class="range-slider">
-													<input class="range-slider__range" type="range" name= 'ran4' value="0" min="0" max="100" step="10" style="float:left">건강4<span style="float:right" class="range-slider__value">0</span>		
-												</div>  
-											-->
+
 												{%if score is defined %}
 												<input type='range' name= 'ran1' value={{score[0]}} min="0" max="100" step="10" />안전<br/>
 												<input type='range' name= 'ran2' value={{score[1]}}  min="0" max="100" step="10"/>건강<br/>
@@ -366,7 +346,6 @@
 				
 				}
 
-				parameter = getParams();
 				ctx = document.getElementById("chart1");
 
 				group="시도";
@@ -387,8 +366,6 @@
 
 				var str='/static/html/mainpage/'+folder_name+'/'+name+'.html'; //테이블 그리기
 				
-				
-				var csv_name='static/data/'+file_name+'.csv'; //차트 그리기 지금은 data2를 data로 해놔서 막아놨음
 
 				$("#plot3").load(str);
 
@@ -397,47 +374,8 @@
 				
 				}
 
-				$('.title').text(title_name);
-
-
-				parameter = getParams();
-				ctx = document.getElementById("chart1");
-
-				group="시도";
-				group_value=title_name;
-
-				d3.csv(csv_name)
-				.then(makeChart);
 
 			}
-
-
-			//range 옆에 숫자 띄우기
-
-			var rangeSlider = function(){
-			var slider = $('.range-slider'),
-				range = $('.range-slider__range'),
-				value = $('.range-slider__value');
-				
-			slider.each(function(){
-
-				value.each(function(){
-				var value = $(this).prev().attr('value');
-				$(this).html(value);
-				});
-
-				range.on('input', function(){
-				$(this).next(value).html(this.value);
-				});
-			});
-			};
-
-			rangeSlider();
-
-			
-			
-
-
 
 
 			
